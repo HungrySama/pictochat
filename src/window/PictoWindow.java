@@ -1,8 +1,7 @@
 package window;
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -17,12 +16,11 @@ import states.WelcomeState;
 @SuppressWarnings("serial")
 public class PictoWindow extends JFrame implements KeyListener {
 
-	private static final int WINDOW_WIDTH = 800;
-	private static final int WINDOW_HEIGHT = 600;
+	public static final int WINDOW_WIDTH = 800;
+	public static final int WINDOW_HEIGHT = 600;
 	
 	public boolean should_close = false;
-	
-	private State current_state;
+	public State current_state;
 	
 	public PictoWindow() {
 		// Listener setup
@@ -36,7 +34,7 @@ public class PictoWindow extends JFrame implements KeyListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		
-		// assign first state
+		// Assign first state
 		this.current_state = new WelcomeState(this);
 		
 		// Begin gameloop
@@ -45,6 +43,7 @@ public class PictoWindow extends JFrame implements KeyListener {
 	
 	public void run() {
 		while (!should_close) {
+			current_state.update();
 			render();
 		}
 	}
@@ -63,7 +62,7 @@ public class PictoWindow extends JFrame implements KeyListener {
 
 		// Draws to hidden buffer, clears previous image
 		Graphics2D g = (Graphics2D) bs.getDrawGraphics();
-		g.setBackground(Color.getHSBColor(0.0f, 0.0f, 0.0f));
+		g.setBackground(Style.BACKGROUND_COLOR);
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 		g.clearRect(0, 0, Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
 		
@@ -94,13 +93,14 @@ public class PictoWindow extends JFrame implements KeyListener {
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		current_state.keyReleased(e);
+	public void keyTyped(KeyEvent e) {
+		current_state.keyTyped(e);
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-		current_state.keyTyped(e);
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
