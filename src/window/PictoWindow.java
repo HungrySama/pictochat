@@ -6,6 +6,8 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
@@ -14,10 +16,15 @@ import states.State;
 import states.WelcomeState;
 
 @SuppressWarnings("serial")
-public class PictoWindow extends JFrame implements KeyListener {
+public class PictoWindow extends JFrame implements KeyListener, MouseListener {
 
 	public static final int WINDOW_WIDTH = 800;
 	public static final int WINDOW_HEIGHT = 600;
+	public static final int CANVAS_SQUARE_RES = 50;
+	public static final int CANVAS_WIDTH = WINDOW_WIDTH / CANVAS_SQUARE_RES; // 50
+	public static final int CANVAS_HEIGHT = WINDOW_HEIGHT / CANVAS_SQUARE_RES; // 37
+	public static final int FEED_DRAWING_RES = 20;
+	
 	
 	public boolean should_close = false;
 	public State current_state;
@@ -25,6 +32,7 @@ public class PictoWindow extends JFrame implements KeyListener {
 	public PictoWindow() {
 		// Listener setup
 		addKeyListener(this);
+		addMouseListener(this);
 
 		// Window setup
 		setTitle("Pictochat");
@@ -101,6 +109,31 @@ public class PictoWindow extends JFrame implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		current_state.mousePressed(e);
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		current_state.mouseReleased(e);
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
 	}
 
 }

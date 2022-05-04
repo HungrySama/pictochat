@@ -29,8 +29,8 @@ public class ClientThread implements Runnable {
             Scanner in = new Scanner(socket.getInputStream());
 
             // start communicating
-            while(!socket.isClosed()){
-                if(in.hasNextLine()) {
+            while (!socket.isClosed()) {
+                if (in.hasNextLine()) {
                     String input = in.nextLine();
                     for(ClientThread thatClient : server.getClients()){
                         PrintWriter thatClientOut = thatClient.getWriter();

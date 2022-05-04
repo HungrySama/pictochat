@@ -42,26 +42,36 @@ public class ServerThread implements Runnable {
             while(!socket.isClosed()){
                 if(serverInStream.available() > 0){
                     if(serverIn.hasNextLine()){
-                        System.out.println(serverIn.nextLine());
+                    	String msg = serverIn.nextLine();
+                    	System.out.println(msg);
+                    	// output messages as drawing to window
+                        if (msg.length() > 0) {
+                        	if (msg.contains("> /")) {
+                        		int prefix_index = msg.indexOf('/');
+                        		parent_state.sent_drawings.add(msg.substring(prefix_index + 1));
+                        	} else {
+                        		parent_state.sent_messages.add(msg);
+                        	}
+                        }
                     }
                 }
                 if(hasMessages){
                 	// output messages to console
-                    String next_message = "";
+                    String raw_message = "";
                     synchronized(messagesToSend){
-                    	next_message = messagesToSend.pop();
+                    	raw_message = messagesToSend.pop();
                         hasMessages = !messagesToSend.isEmpty();
                     }
-                    serverOut.println(username + " > " + next_message);
+                    String final_message = username + " > " + raw_message;
+                    serverOut.println(final_message);
                     serverOut.flush();
-                    // output messages to window
-                    parent_state.sent_messages.add(next_message);
                 }
             }
         }
         catch(IOException e){
             e.printStackTrace();
         }
-
+        
+        
     }
 }
